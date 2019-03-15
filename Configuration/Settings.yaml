@@ -1,5 +1,5 @@
 
-TYPO3:
+Neos:
   Flow:
     security:
       authentication:
@@ -7,7 +7,7 @@ TYPO3:
           FacebookOAuth2Provider:
             provider: Flowpack\OAuth2\Client\Provider\FacebookProvider
             providerOptions:
-              #authenticateRoles: ['TYPO3.Flow.SomeRole']
+              #authenticateRoles: ['Neos.Flow.SomeRole']
 
               authorizationEndpointUri: 'https://www.facebook.com/dialog/oauth'
 
@@ -40,7 +40,7 @@ TYPO3:
           GoogleOAuth2Provider:
             provider: Flowpack\OAuth2\Client\Provider\GoogleProvider
             providerOptions:
-              #authenticateRoles: ['TYPO3.Flow.SomeRole']
+              #authenticateRoles: ['Neos.Flow.SomeRole']
 
               authorizationEndpointUri: 'https://accounts.google.com/o/oauth2/auth'
 
