@@ -16,7 +16,7 @@
 	},
 	"autoload":{
 		"psr-4":{
-			"Flowpack\\OAuth2\\Client":"Classes/"
+			"Flowpack\\OAuth2\\Client\\":"Classes/"
 		}
 	}
 }
