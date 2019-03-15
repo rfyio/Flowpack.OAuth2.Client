@@ -66,10 +66,10 @@ class FacebookApiClient
     public function query($resource, $method = 'GET')
     {
         $uri = new Uri($this->endpoint . $resource);
-        parse_str((string)$uri->getQuery(), $query);
+        \parse_str((string)$uri->getQuery(), $query);
         $query['access_token'] = $this->currentAccessToken;
-        $query['appsecret_proof'] = hash_hmac('sha256', $this->currentAccessToken, $this->appSecret);
-        $uri->setQuery(http_build_query($query));
+        $query['appsecret_proof'] = \hash_hmac('sha256', $this->currentAccessToken, $this->appSecret);
+        $uri->setQuery(\http_build_query($query));
 
         $request = Request::create($uri, $method);
         $response = $this->requestEngine->sendRequest($request);
