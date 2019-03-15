@@ -93,7 +93,7 @@ class FacebookFlow extends AbstractFlow implements FlowInterface
         $this->facebookApiClient->setCurrentAccessToken($credentials['access_token']);
         $query = $this->buildFacebookQuery();
         $content = $this->facebookApiClient->query($query)->getContent();
-        $this->authenticationServicesUserData[(string)$token] = json_decode($content, true);
+        $this->authenticationServicesUserData[(string)$token] = \json_decode($content, true);
     }
 
     /**
@@ -107,7 +107,7 @@ class FacebookFlow extends AbstractFlow implements FlowInterface
     {
         $query = '/me';
         $this->authenticationServicesFields = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TYPO3.Flow.security.authentication.providers.FacebookOAuth2Provider.providerOptions.fields');
-        $fields = implode(',', $this->authenticationServicesFields);
+        $fields = \implode(',', $this->authenticationServicesFields);
 
         $query = $query . '?fields=' . $fields;
         return $query;

@@ -152,7 +152,7 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
         parse_str($response->getBody(), $responseComponentsParsedString);
         if (!array_key_exists('access_token', $responseComponentsParsedString)){
             $responseComponents = $response->getBody();
-            $responseComponents = json_decode($responseComponents, true);
+            $responseComponents = \json_decode($responseComponents, true);
         } else {
             $responseComponents = $responseComponentsParsedString;
         }

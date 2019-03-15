@@ -108,7 +108,7 @@ class GoogleProvider extends AbstractClientProvider
         // From here, we surely know the user is considered authenticated against the remote service,
         // yet to check if there is an immanent account present.
         $authenticationToken->setAuthenticationStatus(TokenInterface::AUTHENTICATION_SUCCESSFUL);
-        /** @var $account \TYPO3\Flow\Security\Account */
+        /** @var $account \Neos\Flow\Security\Account */
         $account = null;
         $isNewCreatedAccount = false;
         $providerName = $this->name;

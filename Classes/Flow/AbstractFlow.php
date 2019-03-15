@@ -115,11 +115,11 @@ abstract class AbstractFlow implements FlowInterface
      */
     public function getForeignAccountFor(AbstractClientToken $token)
     {
-        if (!array_key_exists((string)$token, $this->tokenForeignAccounts)) {
+        if (!\array_key_exists((string)$token, $this->tokenForeignAccounts)) {
             if (!isset($this->authenticationServicesUserData[(string)$token])) {
                 $this->initializeUserData($token);
             }
-            $this->tokenForeignAccounts[(string)$token] = $this->accountRepository->findOneByAccountIdentifier($this->authenticationServicesUserData[(string)$token]['email']);
+            $this->tokenForeignAccounts[(string)$token] = $this->accountRepository->findByAccountIdentifierAndAuthenticationProviderName($this->authenticationServicesUserData[(string)$token]['email']);
         }
         return $this->tokenForeignAccounts[(string)$token];
     }

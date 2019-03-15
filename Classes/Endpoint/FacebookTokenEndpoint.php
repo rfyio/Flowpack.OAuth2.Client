@@ -50,14 +50,14 @@ class FacebookTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
             'input_token' => $tokenToInspect['access_token'],
             'access_token' => $applicationToken['access_token']
         );
-        $request = Request::create(new Uri('https://graph.facebook.com/debug_token?' . http_build_query($requestArguments)));
+        $request = Request::create(new Uri('https://graph.facebook.com/debug_token?' . \http_build_query($requestArguments)));
         $response = $this->requestEngine->sendRequest($request);
         $responseContent = $response->getBody();
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response was not of type 200 but gave code and error %d "%s"', $response->getStatusCode(), $responseContent), 1383758360);
         }
 
-        $responseArray = json_decode($responseContent, true, 16, JSON_BIGINT_AS_STRING);
+        $responseArray = \json_decode($responseContent, true, 16, JSON_BIGINT_AS_STRING);
         $responseArray['data']['app_id'] = (string)$responseArray['data']['app_id'];
         $responseArray['data']['user_id'] = (string)$responseArray['data']['user_id'];
         $clientIdentifier = (string)$this->clientIdentifier;
@@ -65,17 +65,13 @@ class FacebookTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
         if (!$responseArray['data']['is_valid']
             || $responseArray['data']['app_id'] !== $clientIdentifier
         ) {
-            $this->securityLogger->log('Requesting validated token information from the Facebook endpoint did not succeed.', LOG_NOTICE, array('response' => var_export($responseArray, true), 'clientIdentifier' => $clientIdentifier));
+            $this->securityLogger->log('Requesting validated token information from the Facebook endpoint did not succeed.', LOG_NOTICE, array('response' => \var_export($responseArray, true), 'clientIdentifier' => $clientIdentifier));
             return false;
         } else {
             return $responseArray['data'];
         }
     }
 
-    /*
-     * @param $shortLivedToken
-     * @return string
-     */
     /**
      * @param $shortLivedToken
      * @return mixed|string

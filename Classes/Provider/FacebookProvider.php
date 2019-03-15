@@ -94,8 +94,8 @@ class FacebookProvider extends AbstractClientProvider
         // Check if the permitted scopes suffice:
         $necessaryScopes = $this->options['scopes'];
         $scopesHavingPermissionFor = $tokenInformation['scopes'];
-        $requiredButNotPermittedScopes = array_diff($necessaryScopes, $scopesHavingPermissionFor);
-        if (count($requiredButNotPermittedScopes) > 0) {
+        $requiredButNotPermittedScopes = \array_diff($necessaryScopes, $scopesHavingPermissionFor);
+        if (\count($requiredButNotPermittedScopes) > 0) {
             $authenticationToken->setAuthenticationStatus(TokenInterface::WRONG_CREDENTIALS);
             $this->securityLogger->log('The permitted scopes do not satisfy the required once.', LOG_NOTICE, array('necessaryScopes' => $necessaryScopes, 'allowedScopes' => $scopesHavingPermissionFor));
             return;
