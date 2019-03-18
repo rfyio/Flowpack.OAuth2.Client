@@ -41,16 +41,14 @@ class UriBuilder
     {
         $providersOptions = $this->getConfiguredOptionsByProviderName($providerName);
         $uri = new Uri($providersOptions['authorizationEndpointUri']);
-        $presentQuery = (string)$uri->getQuery();
-        $presentQuery = ($presentQuery ? $presentQuery . '&' : '') . \http_build_query(array(
+        $presentQuery = \http_build_query(array(
             'client_id' => $providersOptions['clientIdentifier'],
             'response_type' => $providersOptions['responseType'],
             'scope' => \implode(' ', $providersOptions['scopes']),
             'display' => $providersOptions['display'],
             'redirect_uri' => $this->getRedirectionEndpointUri($providerName)
         ));
-        $uri->withQuery($presentQuery);
-
+        $uri->setQuery($presentQuery);
         return $uri;
     }
 
@@ -66,8 +64,8 @@ class UriBuilder
 
     /**
      * @param string $providerName
-     * @throws \InvalidArgumentException
      * @return array
+     * @throws \Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException
      */
     protected function getConfiguredOptionsByProviderName($providerName)
     {
