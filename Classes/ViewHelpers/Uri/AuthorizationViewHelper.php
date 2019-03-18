@@ -15,7 +15,6 @@ use Flowpack\OAuth2\Client\UriBuilder;
 use Neos\Flow\Annotations as Flow;
 use Neos\FluidAdaptor\Core\ViewHelper\AbstractViewHelper;
 
-
 /**
  */
 class AuthorizationViewHelper extends AbstractViewHelper
