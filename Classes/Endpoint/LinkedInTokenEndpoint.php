@@ -66,7 +66,7 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 
 //\Neos\Flow\var_dump(\http_build_query($requestArguments));
         $request = Request::create(new Uri('https://www.linkedin.com/oauth/v2/authorization' . \http_build_query($requestArguments)));
-//        $request = Request::create(new Uri('https://graph.facebook.com/debug_token?' . $requestArguments["access_token"]));
+//        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . $requestArguments["access_token"]));
 
         \Neos\Flow\var_dump($request);
 
