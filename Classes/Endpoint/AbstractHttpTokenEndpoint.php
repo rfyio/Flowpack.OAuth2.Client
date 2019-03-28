@@ -108,6 +108,7 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
     public function requestClientCredentialsGrantAccessToken($scope = array())
     {
         $accessToken = $this->requestAccessToken(TokenEndpointInterface::GRANT_TYPE_CLIENT_CREDENTIALS, $scope);
+
         return $accessToken;
     }
 
@@ -135,6 +136,7 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
             'client_id' => $this->clientIdentifier,
             'client_secret' => $this->clientSecret
         );
+        \Neos\Flow\var_dump($parameters);
         $parameters = Arrays::arrayMergeRecursiveOverrule($parameters, $additionalParameters, false, false);
 
         $request = Request::create(new Uri($this->endpointUri), 'POST', $parameters);
