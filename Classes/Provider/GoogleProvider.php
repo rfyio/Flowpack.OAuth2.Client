@@ -166,7 +166,7 @@ class GoogleProvider extends AbstractClientProvider
      */
     protected function buildScopeParameter()
     {
-        $scopes = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TYPO3.Flow.security.authentication.providers.GoogleOAuth2Provider.providerOptions.scopes');
+        $scopes = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow.security.authentication.providers.GoogleOAuth2Provider.providerOptions.scopes');
         $scope = implode(' ', $scopes);
         $scopes = array('scope' => $scope);
 
