@@ -40,15 +40,23 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
     {
         \Neos\Flow\var_dump([$tokenToInspect]);
 
-        $applicationToken = $this->requestClientCredentialsGrantAccessToken(); #['r_emailaddres', 'r_liteprofile','w_member_social']
-//        \Neos\Flow\var_dump([$applicationToken]);
+        $applicationToken = $this->requestAuthorizationCodeGrantAccessToken($tokenToInspect); #['r_emailaddres', 'r_liteprofile','w_member_social']
+        \Neos\Flow\var_dump([$applicationToken]);
 //
 
+//        $requestArguments = [
+//
+//            "input_token"  => $tokenToInspect,
+//            "access_token" => $applicationToken["access_token"],
+//            "token_type"   => $applicationToken["token_type"]
+//        ];
         $requestArguments = [
 
-            "input_token"  => $tokenToInspect,
-            "access_token" => $applicationToken["access_token"],
-            "token_type"   => $applicationToken["token_type"]
+            'client_id'  => $this->clientIdentifier,
+            'client_secret' => $this->clientSecret,
+            'redirect_uri' => $this->endpointUri,
+            'code'   => $tokenToInspect,
+            'grant_type'=> 'authentication_code'
         ];
 
 
@@ -58,13 +66,14 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //
 //        \Neos\Flow\var_dump([$requestArguments["token_type"]]);
 //        echo print_r($requestArguments);
+//        \Neos\Flow\var_dump($requestArguments['code']);
 
 //        echo print_r($requestArguments["access_token"]["access_token"]);
 
 //\Neos\Flow\var_dump(\http_build_query($requestArguments));
-//        $request = Request::create(new Uri('https://www.linkedin.com/oauth/v2/authorization' . \http_build_query($requestArguments)));
+        $request = Request::create(new Uri('https://www.linkedin.com/oauth/v2/authorization' . \http_build_query($requestArguments)));
 //        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . $requestArguments["access_token"]));
-        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . \http_build_query($requestArguments)));
+//        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . \http_build_query($requestArguments)));
 
 
 
@@ -74,26 +83,26 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 
 
         $response = $this->requestEngine->sendRequest($request);
-        \Neos\Flow\var_dump($this->requestEngine);
-        \Neos\Flow\var_dump($response);
-
-        echo print_r($response);
+//        \Neos\Flow\var_dump($this->requestEngine);
+//        \Neos\Flow\var_dump($response);
+//
+//        echo print_r($response);
 
         $responseContent = $response->getBody();
 
-        \Neos\Flow\var_dump($responseContent);
-     \Neos\Flow\var_dump($response->getStatusCode());
+//        \Neos\Flow\var_dump($responseContent);
+//     \Neos\Flow\var_dump($response->getStatusCode());
 
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response was not of type 200 but gave code and error %d "%s"', $response->getStatusCode(), $responseContent), 1383758360);
         }
         $responseArray = \json_decode($responseContent, true, 16, JSON_BIGINT_AS_STRING);
 
-        \Neos\Flow\var_dump($responseArray);
+//        \Neos\Flow\var_dump($responseArray);
 
-        echo '<div style="position: absolute; z-index: 1000; background-color: red; width: 100%; margin: 11.5% 0 0 0 ">
-        <p>You arrived here</p>
-      </div>';
+//        echo '<div style="position: absolute; z-index: 1000; background-color: red; width: 100%; margin: 11.5% 0 0 0 ">
+//        <p>You arrived here</p>
+//      </div>';
         \Neos\Flow\var_dump($responseArray["data"]["error"]["code"]);
         \Neos\Flow\var_dump($responseArray["data"]["error"]["message"]);
         $responseArray['data']['app_id'] = (string)$responseArray['data']['app_id'];
@@ -115,15 +124,15 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
         }
     }
 
-//    /**
-//     * @param $shortLivedToken
-//     * @return mixed|string
-//     * @throws OAuth2Exception
-//     * @throws \Neos\Flow\Http\Client\CurlEngineException
-//     * @throws \Neos\Flow\Http\Exception
-//     */
-//    public function requestLongLivedToken($shortLivedToken)
-//    {
-//        return $this->requestAccessToken('li_exchange_token', array('li_exchange_token' => $shortLivedToken));
-//    }
+    /**
+     * @param $shortLivedToken
+     * @return mixed|string
+     * @throws OAuth2Exception
+     * @throws \Neos\Flow\Http\Client\CurlEngineException
+     * @throws \Neos\Flow\Http\Exception
+     */
+    public function requestLongLivedToken($shortLivedToken)
+    {
+        return $this->requestAccessToken('li_exchange_token', array('li_exchange_token' => $shortLivedToken));
+    }
 }

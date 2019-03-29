@@ -45,15 +45,6 @@ class Resolver
             throw new \InvalidArgumentException(sprintf('In Settings.yaml, there was no "tokenEndpointClassName" option given for the provider "%s".', $providerName), 1383743372);
         }
 
-        //TODO: array returned instead of string
-//        \Neos\Flow\var_dump($tokenEndpointClassName);
-//        for ($i=0; $i< count($tokenEndpointClassName); $i++){
-//            \Neos\Flow\var_dump($tokenEndpointClassName[$i]);
-//
-////       RESULT: Warning: count(): Parameter must be an array or an object that implements Countable
-//        }
-//        echo $tokenEndpointClassName;
-//        \Neos\Flow\var_dump($this->objectManager->get($tokenEndpointClassName));
         return $this->objectManager->get($tokenEndpointClassName);
     }
 }

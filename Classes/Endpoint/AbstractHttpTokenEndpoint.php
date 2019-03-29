@@ -78,6 +78,7 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
             'redirect_uri' => $redirectUri,
             'client_id' => $clientIdentifier
         ));
+        \Neos\Flow\var_dump($accessToken);
         return $accessToken;
     }
 
@@ -158,7 +159,7 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
         } else {
             $responseComponents = $responseComponentsParsedString;
         }
-
+        \Neos\Flow\var_dump($responseComponents);
         return $responseComponents;
     }
 }

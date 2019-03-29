@@ -17,19 +17,11 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Party\Domain\Model\ElectronicAddress;
 use Neos\Party\Domain\Model\Person;
 use Neos\Party\Domain\Model\PersonName;
-use Neos\Party\Domain\Repository\PartyRepository;
-use Neos\Flow\Configuration\ConfigurationManager;
 
 /**
  */
 class LinkedInFlow extends AbstractFlow implements FlowInterface
 {
-    /**
-     * @Flow\Inject
-     * @var ConfigurationManager
-     */
-    protected $configurationManager;
-
     /**
      * @Flow\Inject
      * @var \Flowpack\OAuth2\Client\Utility\LinkedInApiClient
@@ -48,7 +40,7 @@ class LinkedInFlow extends AbstractFlow implements FlowInterface
         $userData = $this->authenticationServicesUserData[(string)$token];
 
         $party = new Person();
-        $party->setName(new PersonName('', $userData['first_name'], '', $userData['last_name']));
+        $party->setName(new PersonName('', $userData['given_name'], '', $userData['family_name']));
         // Todo: this is not covered by the Person implementation, we should have a solution for that
         #$party->setBirthDate(\DateTime::createFromFormat('!m/d/Y', $userData['birthday'], new \DateTimeZone('UTC')));
         #$party->setGender(substr($userData['gender'], 0, 1));
@@ -80,36 +72,19 @@ class LinkedInFlow extends AbstractFlow implements FlowInterface
      */
     public function getTokenClassName()
     {
-        return 'Flowpack\OAuth2\Client\Token\LinkedInToken';
+        return array('Flowpack\OAuth2\Client\Token\LinkedInToken');
     }
 
     /**
-     * getting all the defined data from linkedIn
+     * getting all the defined data from facebook
      * @param AbstractClientToken $token
      */
     protected function initializeUserData(AbstractClientToken $token)
     {
+        $query = '/userinfo/v2/me';
         $credentials = $token->getCredentials();
         $this->linkedInApiClient->setCurrentAccessToken($credentials['access_token']);
-        $query = $this->buildLinkedInQuery();
         $content = $this->linkedInApiClient->query($query)->getContent();
         $this->authenticationServicesUserData[(string)$token] = \json_decode($content, true);
-    }
-
-    /**
-     * builds the query from the fields in Settings.yaml
-     * there is no further check if the fields are allowed in the scopes
-     * for further information have a look at https://developers.linkedIn.com/docs/linkedIn-login/permissions
-     *
-     * @return string
-     */
-    protected function buildLinkedInQuery()
-    {
-        $query = '/me';
-        $this->authenticationServicesFields = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.fields');
-        $fields = \implode(',', $this->authenticationServicesFields);
-
-        $query = $query . '?fields=' . $fields;
-        return $query;
     }
 }
