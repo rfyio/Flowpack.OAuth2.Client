@@ -15,6 +15,37 @@ Flowpack\OAuth2\Client\Endpoint\FacebookTokenEndpoint:
     'clientSecret':
       setting: 'Neos.Flow.security.authentication.providers.FacebookOAuth2Provider.providerOptions.clientSecret'
 
+Flowpack\OAuth2\Client\Utility\LinkedInApiClient:
+  properties:
+    'requestEngine':
+      object:
+        name: 'Neos\Flow\Http\Client\CurlEngine'
+    'appSecret':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.clientSecret'
+
+Flowpack\OAuth2\Client\Endpoint\LinkedInTokenEndpoint:
+  properties:
+    'endpointUri':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.tokenEndpointUri'
+    'clientIdentifier':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.clientIdentifier'
+    'clientSecret':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.clientSecret'
+    'redirectionEndpointUri':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.redirectionEndpointUri'
+    'authorizationEndpointUri':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.authorizationEndpointUri'
+    'scopes':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.scopes'
+    'responseType':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.responseType'
+    'partyCreation':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.partyCreation'
+    'display':
+      setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.display'
+
+
+
 Flowpack\OAuth2\Client\Utility\GoogleApiClient:
   properties:
     'requestEngine':

@@ -73,6 +73,9 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
      */
     public function requestAuthorizationCodeGrantAccessToken($code, $redirectUri = null, $clientIdentifier = null)
     {
+//        \Neos\Flow\var_dump($code);
+//        \Neos\Flow\var_dump($redirectUri);
+//        \Neos\Flow\var_dump($this->clientIdentifier);
         $accessToken = $this->requestAccessToken(TokenEndpointInterface::GRANT_TYPE_AUTHORIZATION_CODE, array(
             'code' => $code,
             'redirect_uri' => $redirectUri,
@@ -139,12 +142,12 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
         );
         \Neos\Flow\var_dump($parameters);
         $parameters = Arrays::arrayMergeRecursiveOverrule($parameters, $additionalParameters, false, false);
-
+//\Neos\Flow\var_dump($parameters);
         $request = Request::create(new Uri($this->endpointUri), 'POST', $parameters);
         $request->withHeader('Content-Type', 'application/x-www-form-urlencoded');
-
+    \Neos\Flow\var_dump($request);
         $response = $this->requestEngine->sendRequest($request);
-
+\Neos\Flow\var_dump($response);
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response when requesting the access token was not as expected, code and message was: %d %s', $response->getStatusCode(), $response->getContent()), 1383749757);
         }

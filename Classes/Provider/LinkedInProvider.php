@@ -320,6 +320,7 @@ class LinkedInProvider extends AbstractClientProvider
         $scope = implode(' ', $scopes);
         $scopes = array('scope' => $scope);
 
+        \Neos\Flow\var_dump($scope);
         return $scopes;
     }
 }

@@ -36,12 +36,14 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
      * @throws \Neos\Flow\Http\Client\CurlEngineException
      * @throws \Neos\Flow\Http\Exception
      */
-    public function requestValidatedTokenInformation($tokenToInspect)
+    public function requestValidatedTokenInformation($tokenToInspect, $redirectUri)
     {
-        \Neos\Flow\var_dump([$tokenToInspect]);
+//        \Neos\Flow\var_dump([$tokenToInspect]);
+//        \Neos\Flow\var_dump($redirectUri);
 
-        $applicationToken = $this->requestAuthorizationCodeGrantAccessToken($tokenToInspect); #['r_emailaddres', 'r_liteprofile','w_member_social']
-        \Neos\Flow\var_dump([$applicationToken]);
+        $applicationToken = $this->requestAuthorizationCodeGrantAccessToken($tokenToInspect, $redirectUri);
+
+//        \Neos\Flow\var_dump([$applicationToken]);
 //
 
 //        $requestArguments = [
@@ -66,6 +68,7 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //
 //        \Neos\Flow\var_dump([$requestArguments["token_type"]]);
 //        echo print_r($requestArguments);
+//        \Neos\Flow\var_dump($requestArguments);
 //        \Neos\Flow\var_dump($requestArguments['code']);
 
 //        echo print_r($requestArguments["access_token"]["access_token"]);
@@ -77,7 +80,7 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 
 
 
-        \Neos\Flow\var_dump($request);
+//        \Neos\Flow\var_dump($request);
 
 
 

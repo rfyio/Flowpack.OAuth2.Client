@@ -18,4 +18,5 @@ use Neos\Flow\Security\Authentication\Provider\AbstractProvider;
  */
 abstract class AbstractClientProvider extends AbstractProvider
 {
+    
 }
