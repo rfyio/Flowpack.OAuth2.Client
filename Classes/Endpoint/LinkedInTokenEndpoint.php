@@ -43,7 +43,7 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 
         $applicationToken = $this->requestAuthorizationCodeGrantAccessToken($tokenToInspect, $redirectUri);
 
-//        \Neos\Flow\var_dump([$applicationToken]);
+        \Neos\Flow\var_dump([$applicationToken]);
 //
 
 //        $requestArguments = [
@@ -61,7 +61,7 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
             'grant_type'=> 'authentication_code'
         ];
 
-
+\Neos\Flow\var_dump($requestArguments);
 //        \Neos\Flow\var_dump([$requestArguments["input_token"]]);
 
 //        \Neos\Flow\var_dump([$requestArguments["access_token"]]);
@@ -73,27 +73,26 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 
 //        echo print_r($requestArguments["access_token"]["access_token"]);
 
-//\Neos\Flow\var_dump(\http_build_query($requestArguments));
         $request = Request::create(new Uri('https://www.linkedin.com/oauth/v2/authorization' . \http_build_query($requestArguments)));
 //        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . $requestArguments["access_token"]));
 //        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . \http_build_query($requestArguments)));
 
 
 
-//        \Neos\Flow\var_dump($request);
+        \Neos\Flow\var_dump($request);
 
 
 
 
         $response = $this->requestEngine->sendRequest($request);
 //        \Neos\Flow\var_dump($this->requestEngine);
-//        \Neos\Flow\var_dump($response);
+        \Neos\Flow\var_dump($response);
 //
 //        echo print_r($response);
 
         $responseContent = $response->getBody();
 
-//        \Neos\Flow\var_dump($responseContent);
+        \Neos\Flow\var_dump($responseContent);
 //     \Neos\Flow\var_dump($response->getStatusCode());
 
         if ($response->getStatusCode() !== 200) {
@@ -106,23 +105,23 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //        echo '<div style="position: absolute; z-index: 1000; background-color: red; width: 100%; margin: 11.5% 0 0 0 ">
 //        <p>You arrived here</p>
 //      </div>';
-        \Neos\Flow\var_dump($responseArray["data"]["error"]["code"]);
-        \Neos\Flow\var_dump($responseArray["data"]["error"]["message"]);
+//        \Neos\Flow\var_dump($responseArray["data"]["error"]["code"]);
+//        \Neos\Flow\var_dump($responseArray["data"]["error"]["message"]);
         $responseArray['data']['app_id'] = (string)$responseArray['data']['app_id'];
 
         $responseArray['data']['user_id'] = (string)$responseArray['data']['user_id'];
         $clientIdentifier = (string)$this->clientIdentifier;
-        \Neos\Flow\var_dump($responseArray);
-        \Neos\Flow\var_dump($clientIdentifier);
+//        \Neos\Flow\var_dump($responseArray);
+//        \Neos\Flow\var_dump($clientIdentifier);
 
 
         if (!$responseArray['data']['is_valid']
             || $responseArray['data']['app_id'] !== $clientIdentifier
         ) {
-            $this->securityLogger->log('Requesting validated token information from the Facebook endpoint did not succeed.', LOG_NOTICE, array('response' => \var_export($responseArray, true), 'clientIdentifier' => $clientIdentifier));
+            $this->securityLogger->log('Requesting validated token information from the Linked In endpoint did not succeed.', LOG_NOTICE, array('response' => \var_export($responseArray, true), 'clientIdentifier' => $clientIdentifier));
             return false;
         } else {
-        \Neos\Flow\var_dump($responseArray['data']);
+//        \Neos\Flow\var_dump($responseArray['data']);
             return $responseArray['data'];
         }
     }
