@@ -147,7 +147,8 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
         $request->withHeader('Content-Type', 'application/x-www-form-urlencoded');
 //    \Neos\Flow\var_dump($request);
         $response = $this->requestEngine->sendRequest($request);
-//\Neos\Flow\var_dump($response);
+\Neos\Flow\var_dump($response);
+// TODO: The response was not of type 200 but gave code and error 404 "<!DOCTYPE html>
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response when requesting the access token was not as expected, code and message was: %d %s', $response->getStatusCode(), $response->getContent()), 1383749757);
         }
@@ -162,7 +163,7 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
         } else {
             $responseComponents = $responseComponentsParsedString;
         }
-        \Neos\Flow\var_dump($responseComponents);
+//        \Neos\Flow\var_dump($responseComponents);
         return $responseComponents;
     }
 }

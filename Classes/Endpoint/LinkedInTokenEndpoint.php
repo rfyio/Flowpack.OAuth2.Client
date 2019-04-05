@@ -43,7 +43,7 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 
         $applicationToken = $this->requestAuthorizationCodeGrantAccessToken($tokenToInspect, $redirectUri);
 
-        \Neos\Flow\var_dump([$applicationToken]);
+//        \Neos\Flow\var_dump([$applicationToken]);
 //
 
 //        $requestArguments = [
@@ -54,14 +54,15 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //        ];
         $requestArguments = [
 
-            'client_id'  => $this->clientIdentifier,
+//            'client_id'  => $this->clientIdentifier,
             'client_secret' => $this->clientSecret,
-            'redirect_uri' => $this->endpointUri,
+//            'redirect_uri' => $this->endpointUri,
             'code'   => $tokenToInspect,
-            'grant_type'=> 'authentication_code'
+            'grant_type'=> 'authentication_code',
+            'access_token'=>$applicationToken['access_token']
         ];
 
-\Neos\Flow\var_dump($requestArguments);
+//\Neos\Flow\var_dump($requestArguments);
 //        \Neos\Flow\var_dump([$requestArguments["input_token"]]);
 
 //        \Neos\Flow\var_dump([$requestArguments["access_token"]]);
@@ -72,27 +73,27 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //        \Neos\Flow\var_dump($requestArguments['code']);
 
 //        echo print_r($requestArguments["access_token"]["access_token"]);
-
+//\Neos\Flow\var_dump( \http_build_query($requestArguments));
         $request = Request::create(new Uri('https://www.linkedin.com/oauth/v2/authorization' . \http_build_query($requestArguments)));
 //        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . $requestArguments["access_token"]));
 //        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . \http_build_query($requestArguments)));
 
 
 
-        \Neos\Flow\var_dump($request);
+//        \Neos\Flow\var_dump($request);
 
 
 
 
         $response = $this->requestEngine->sendRequest($request);
 //        \Neos\Flow\var_dump($this->requestEngine);
-        \Neos\Flow\var_dump($response);
+//        \Neos\Flow\var_dump($response);
 //
 //        echo print_r($response);
 
         $responseContent = $response->getBody();
 
-        \Neos\Flow\var_dump($responseContent);
+//        \Neos\Flow\var_dump($responseContent);
 //     \Neos\Flow\var_dump($response->getStatusCode());
 
         if ($response->getStatusCode() !== 200) {
