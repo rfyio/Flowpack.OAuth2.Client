@@ -75,11 +75,12 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
     {
 //        \Neos\Flow\var_dump($code);
 //        \Neos\Flow\var_dump($redirectUri);
-//        \Neos\Flow\var_dump($this->clientIdentifier);
+        \Neos\Flow\var_dump($clientIdentifier);
+        \Neos\Flow\var_dump($this->clientIdentifier);
         $accessToken = $this->requestAccessToken(TokenEndpointInterface::GRANT_TYPE_AUTHORIZATION_CODE, array(
             'code' => $code,
             'redirect_uri' => $redirectUri,
-            'client_id' => $clientIdentifier
+            'client_id' => $this->clientIdentifier
         ));
 //        \Neos\Flow\var_dump($accessToken);
         return $accessToken;

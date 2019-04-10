@@ -41,9 +41,9 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //        \Neos\Flow\var_dump([$tokenToInspect]);
 //        \Neos\Flow\var_dump($redirectUri);
 
-        $applicationToken = $this->requestAuthorizationCodeGrantAccessToken($tokenToInspect, $redirectUri);
+        $accessToken = $this->requestAuthorizationCodeGrantAccessToken($tokenToInspect, $redirectUri);
 
-//        \Neos\Flow\var_dump([$applicationToken]);
+        \Neos\Flow\var_dump([$accessToken]);
 //
 
 //        $requestArguments = [
@@ -59,7 +59,7 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //            'redirect_uri' => $this->endpointUri,
             'code'   => $tokenToInspect,
             'grant_type'=> 'authentication_code',
-            'access_token'=>$applicationToken['access_token']
+            'access_token'=>$accessToken['access_token']
         ];
 
 //\Neos\Flow\var_dump($requestArguments);
