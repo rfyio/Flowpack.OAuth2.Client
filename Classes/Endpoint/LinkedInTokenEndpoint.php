@@ -12,6 +12,8 @@ namespace Flowpack\OAuth2\Client\Endpoint;
  *                                                                        */
 
 use Flowpack\OAuth2\Client\Exception as OAuth2Exception;
+use Flowpack\OAuth2\Client\Provider\LinkedInProvider;
+use Flowpack\OAuth2\Client\Utility\LinkedInApiClient;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Request;
 use Neos\Flow\Http\Uri;
@@ -30,12 +32,12 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
     protected $securityLogger;
 
     /**
-     * @param $tokenToInspect
-     * @return bool
-     * @throws OAuth2Exception
-     * @throws \Neos\Flow\Http\Client\CurlEngineException
-     * @throws \Neos\Flow\Http\Exception
-     */
+ * @param $tokenToInspect
+ * @return bool
+ * @throws OAuth2Exception
+ * @throws \Neos\Flow\Http\Client\CurlEngineException
+ * @throws \Neos\Flow\Http\Exception
+ */
     public function requestValidatedTokenInformation($tokenToInspect, $redirectUri)
     {
 //        \Neos\Flow\var_dump([$tokenToInspect]);
@@ -54,49 +56,38 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //        ];
         $requestArguments = [
 
-//            'response_type' => 'code',
-            'client_id'  => $this->clientIdentifier,
-            'client_secret' => $this->clientSecret,
-//            'redirect_uri' => $this->endpointUri,
+            'grant_type'=> self::GRANT_TYPE_AUTHORIZATION_CODE,
             'code'   => $tokenToInspect,
-            'grant_type'=> 'authentication_code',
-            'access_token'=>$accessToken['access_token']
+            'redirect_uri' => $this->endpointUri,
+            'client_id' => $this->clientIdentifier,
+            'client_secret' => $this->clientSecret
+//            ,'access_token'=>$accessToken['access_token']
         ];
 
-//\Neos\Flow\var_dump($requestArguments);
-//        \Neos\Flow\var_dump([$requestArguments["input_token"]]);
+//        $httpBuildQuery = \http_build_query($requestArguments);
+//        \Neos\Flow\var_dump($httpBuildQuery);
 
-//        \Neos\Flow\var_dump([$requestArguments["access_token"]]);
-//
-//        \Neos\Flow\var_dump([$requestArguments["token_type"]]);
-//        echo print_r($requestArguments);
-//        \Neos\Flow\var_dump($requestArguments);
-//        \Neos\Flow\var_dump($requestArguments['code']);
-
-//        echo print_r($requestArguments["access_token"]["access_token"]);
-//\Neos\Flow\var_dump( \http_build_query($requestArguments));
-        $request = Request::create(new Uri('api.linkedin.com?' . \http_build_query($requestArguments)));
-//        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . $requestArguments["access_token"]));
-//        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . \http_build_query($requestArguments)));
+        $request = Request::create(new Uri('https://api.linkedin.com/v2?' . \http_build_query($accessToken)));
 
 
+        $request->setHeader("Authorization", "Bearer ".$accessToken["access_token"]);
 
-//        \Neos\Flow\var_dump($request);
+//        \Neos\Flow\var_dump($request->getHeader('Authorization'));
 
 
 
 
         $response = $this->requestEngine->sendRequest($request);
+
 //        \Neos\Flow\var_dump($this->requestEngine);
-//        \Neos\Flow\var_dump($response);
-//
-//        echo print_r($response);
+        \Neos\Flow\var_dump($response);
+
 
         $responseContent = $response->getBody();
 
-//        \Neos\Flow\var_dump($responseContent);
-     \Neos\Flow\var_dump($response->getStatusCode());
-//toDo: Bloqued with an error 400
+        \Neos\Flow\var_dump($responseContent);
+//     \Neos\Flow\var_dump($response->getStatusCode());
+//toDo: Bloqued with an errorserviceErrorCode":0,"message":"Resource null does not exist","status":404
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response was not of type 200 but gave code and error %d "%s"', $response->getStatusCode(), $responseContent), 1383758360);
         }
