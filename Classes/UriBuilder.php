@@ -42,12 +42,13 @@ class UriBuilder
         $providersOptions = $this->getConfiguredOptionsByProviderName($providerName);
         $uri = new Uri($providersOptions['authorizationEndpointUri']);
         $presentQuery = \http_build_query(array(
-            'client_id' => $providersOptions['clientIdentifier'],
             'response_type' => $providersOptions['responseType'],
+            'client_id' => $providersOptions['clientIdentifier'],
+            'redirect_uri' => $this->getRedirectionEndpointUri($providerName),
             'scope' => \implode(' ', $providersOptions['scopes']),
-            'display' => $providersOptions['display'],
-            'redirect_uri' => $this->getRedirectionEndpointUri($providerName)
+            'display' => $providersOptions['display']
         ));
+        // TODO: add field state to prevent CSRF attacks https://docs.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow?context=linkedin/context
         $uri->setQuery($presentQuery);
         return $uri;
     }

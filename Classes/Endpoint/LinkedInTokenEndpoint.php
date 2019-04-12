@@ -43,7 +43,7 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 
         $accessToken = $this->requestAuthorizationCodeGrantAccessToken($tokenToInspect, $redirectUri);
 
-        \Neos\Flow\var_dump([$accessToken]);
+//        \Neos\Flow\var_dump([$accessToken]);
 //
 
 //        $requestArguments = [
@@ -54,7 +54,8 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //        ];
         $requestArguments = [
 
-//            'client_id'  => $this->clientIdentifier,
+//            'response_type' => 'code',
+            'client_id'  => $this->clientIdentifier,
             'client_secret' => $this->clientSecret,
 //            'redirect_uri' => $this->endpointUri,
             'code'   => $tokenToInspect,
@@ -74,7 +75,7 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 
 //        echo print_r($requestArguments["access_token"]["access_token"]);
 //\Neos\Flow\var_dump( \http_build_query($requestArguments));
-        $request = Request::create(new Uri('https://www.linkedin.com/oauth/v2/authorization' . \http_build_query($requestArguments)));
+        $request = Request::create(new Uri('api.linkedin.com?' . \http_build_query($requestArguments)));
 //        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . $requestArguments["access_token"]));
 //        $request = Request::create(new Uri('https://www.linkedin.com/uas/oauth2/authorization' . \http_build_query($requestArguments)));
 
@@ -94,14 +95,14 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
         $responseContent = $response->getBody();
 
 //        \Neos\Flow\var_dump($responseContent);
-//     \Neos\Flow\var_dump($response->getStatusCode());
-
+     \Neos\Flow\var_dump($response->getStatusCode());
+//toDo: Bloqued with an error 400
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response was not of type 200 but gave code and error %d "%s"', $response->getStatusCode(), $responseContent), 1383758360);
         }
         $responseArray = \json_decode($responseContent, true, 16, JSON_BIGINT_AS_STRING);
 
-//        \Neos\Flow\var_dump($responseArray);
+        \Neos\Flow\var_dump($responseArray);
 
 //        echo '<div style="position: absolute; z-index: 1000; background-color: red; width: 100%; margin: 11.5% 0 0 0 ">
 //        <p>You arrived here</p>

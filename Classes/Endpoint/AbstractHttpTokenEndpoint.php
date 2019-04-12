@@ -73,16 +73,12 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
      */
     public function requestAuthorizationCodeGrantAccessToken($code, $redirectUri = null, $clientIdentifier = null)
     {
-//        \Neos\Flow\var_dump($code);
-//        \Neos\Flow\var_dump($redirectUri);
-        \Neos\Flow\var_dump($clientIdentifier);
-        \Neos\Flow\var_dump($this->clientIdentifier);
         $accessToken = $this->requestAccessToken(TokenEndpointInterface::GRANT_TYPE_AUTHORIZATION_CODE, array(
             'code' => $code,
             'redirect_uri' => $redirectUri,
             'client_id' => $this->clientIdentifier
         ));
-//        \Neos\Flow\var_dump($accessToken);
+
         return $accessToken;
     }
 
@@ -146,16 +142,16 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
 //\Neos\Flow\var_dump($parameters);
         $request = Request::create(new Uri($this->endpointUri), 'POST', $parameters);
         $request->withHeader('Content-Type', 'application/x-www-form-urlencoded');
-//    \Neos\Flow\var_dump($request);
+
         $response = $this->requestEngine->sendRequest($request);
-\Neos\Flow\var_dump($response);
-// TODO: The response was not of type 200 but gave code and error 404 "<!DOCTYPE html>
+//\Neos\Flow\var_dump($response);
+
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response when requesting the access token was not as expected, code and message was: %d %s', $response->getStatusCode(), $response->getContent()), 1383749757);
         }
 
         // expects Tokens from Facebook or Google
-        // google returns json
+        // google returns json, LinkedIn also
         // facebook an string with parameters
         parse_str($response->getBody(), $responseComponentsParsedString);
         if (!array_key_exists('access_token', $responseComponentsParsedString)){
