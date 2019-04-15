@@ -67,12 +67,16 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
 //        $httpBuildQuery = \http_build_query($requestArguments);
 //        \Neos\Flow\var_dump($httpBuildQuery);
 
-        $request = Request::create(new Uri('https://api.linkedin.com/v2?' . \http_build_query($accessToken)));
+//        $request = Request::create(new Uri('https://api.linkedin.com/v2?' . \http_build_query($requestArguments)));
+        $request = Request::create(new Uri('https://www.linkedin.com/oauth/v2/authorization?' . \http_build_query($requestArguments)));
 
-
+        $request->setHeader("application","x-www-form-urlencoded");
         $request->setHeader("Authorization", "Bearer ".$accessToken["access_token"]);
 
+       \Neos\Flow\var_dump($request->renderHeaders());
+//    \Neos\Flow\var_dump($request->getHeader("Authorization"));
 //        \Neos\Flow\var_dump($request->getHeader('Authorization'));
+
 
 
 
@@ -83,11 +87,11 @@ class LinkedInTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
         \Neos\Flow\var_dump($response);
 
 
-        $responseContent = $response->getBody();
+        $responseContent = $response->getContent();
 
         \Neos\Flow\var_dump($responseContent);
 //     \Neos\Flow\var_dump($response->getStatusCode());
-//toDo: Bloqued with an errorserviceErrorCode":0,"message":"Resource null does not exist","status":404
+//toDo: Bloqued with an The response was not of type 200 but gave code and error 302. The address is different from "https://www.linkedin.com/oauth/v2/authorization"
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response was not of type 200 but gave code and error %d "%s"', $response->getStatusCode(), $responseContent), 1383758360);
         }
