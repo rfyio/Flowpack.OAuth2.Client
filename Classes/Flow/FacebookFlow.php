@@ -59,7 +59,7 @@ class FacebookFlow extends AbstractFlow implements FlowInterface
         $party->addElectronicAddress($electronicAddress);
         $party->setPrimaryElectronicAddress($electronicAddress);
 
-        $partyValidator = $this->validatorResolver->getBaseValidatorConjunction('TYPO3\Party\Domain\Model\Person');
+        $partyValidator = $this->validatorResolver->getBaseValidatorConjunction('Neos\Party\Domain\Model\Person');
         $validationResult = $partyValidator->validate($party);
         if ($validationResult->hasErrors()) {
             throw new InvalidPartyDataException('The created party does not satisfy the requirements', 1384266207);
@@ -106,7 +106,7 @@ class FacebookFlow extends AbstractFlow implements FlowInterface
     protected function buildFacebookQuery()
     {
         $query = '/me';
-        $this->authenticationServicesFields = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TYPO3.Flow.security.authentication.providers.FacebookOAuth2Provider.providerOptions.fields');
+        $this->authenticationServicesFields = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow.security.authentication.providers.FacebookOAuth2Provider.providerOptions.fields');
         $fields = \implode(',', $this->authenticationServicesFields);
 
         $query = $query . '?fields=' . $fields;

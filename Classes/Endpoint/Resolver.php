@@ -44,8 +44,7 @@ class Resolver
         if ($tokenEndpointClassName === null) {
             throw new \InvalidArgumentException(sprintf('In Settings.yaml, there was no "tokenEndpointClassName" option given for the provider "%s".', $providerName), 1383743372);
         }
-
-        //TODO: array returned instead of string
+//\Neos\Flow\var_dump($this->objectManager->get($tokenEndpointClassName));
         return $this->objectManager->get($tokenEndpointClassName);
     }
 }

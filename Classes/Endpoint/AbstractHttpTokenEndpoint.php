@@ -76,8 +76,9 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
         $accessToken = $this->requestAccessToken(TokenEndpointInterface::GRANT_TYPE_AUTHORIZATION_CODE, array(
             'code' => $code,
             'redirect_uri' => $redirectUri,
-            'client_id' => $clientIdentifier
+            'client_id' => $this->clientIdentifier
         ));
+
         return $accessToken;
     }
 
@@ -108,6 +109,7 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
     public function requestClientCredentialsGrantAccessToken($scope = array())
     {
         $accessToken = $this->requestAccessToken(TokenEndpointInterface::GRANT_TYPE_CLIENT_CREDENTIALS, $scope);
+
         return $accessToken;
     }
 
@@ -135,19 +137,21 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
             'client_id' => $this->clientIdentifier,
             'client_secret' => $this->clientSecret
         );
+//        \Neos\Flow\var_dump($parameters);
         $parameters = Arrays::arrayMergeRecursiveOverrule($parameters, $additionalParameters, false, false);
-
+//\Neos\Flow\var_dump($parameters);
         $request = Request::create(new Uri($this->endpointUri), 'POST', $parameters);
         $request->withHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         $response = $this->requestEngine->sendRequest($request);
+//\Neos\Flow\var_dump($response);
 
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response when requesting the access token was not as expected, code and message was: %d %s', $response->getStatusCode(), $response->getContent()), 1383749757);
         }
 
         // expects Tokens from Facebook or Google
-        // google returns json
+        // google returns json, LinkedIn also
         // facebook an string with parameters
         parse_str($response->getBody(), $responseComponentsParsedString);
         if (!array_key_exists('access_token', $responseComponentsParsedString)){
@@ -156,7 +160,7 @@ abstract class AbstractHttpTokenEndpoint implements TokenEndpointInterface
         } else {
             $responseComponents = $responseComponentsParsedString;
         }
-
+//        \Neos\Flow\var_dump($responseComponents);
         return $responseComponents;
     }
 }
