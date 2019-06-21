@@ -1,4 +1,3 @@
-
 Neos:
   Flow:
     security:
@@ -16,7 +15,7 @@ Neos:
 
               tokenEndpointUri: 'https://graph.facebook.com/oauth/access_token'
               tokenEndpointClassName: Flowpack\OAuth2\Client\Endpoint\FacebookTokenEndpoint
-              clientIdentifier: 123456-your-client-identifier
+              clientIdentifier: '123456-your-client-identifier'
               clientSecret: '-add-your-client-secret-here-'
               responseType: code
 
@@ -64,4 +63,27 @@ Neos:
               partyCreation: TRUE
 
               display: popup
-  
+
+          LinkedInOAuth2Provider:
+            provider: Flowpack\OAuth2\Client\Provider\LinkedInProvider
+            providerOptions:
+              #authenticateRoles: ['Neos.Flow.SomeRole']
+
+              authorizationEndpointUri: 'https://www.linkedin.com/oauth/v2/authorization'
+
+              redirectionEndpointUri: 'https://www.yoursite.com/authentication/authenticate'
+
+              tokenEndpointUri: 'https://www.linkedin.com/oauth/v2/accessToken'
+              tokenEndpointClassName: Flowpack\OAuth2\Client\Endpoint\LinkedInTokenEndpoint
+              clientIdentifier: '123456-your-client-identifier'
+              clientSecret: '-add-your-client-secret-here-'
+              responseType: code
+
+              # Reference scopes
+              scopes:
+                - r_emailaddress
+                - r_liteprofile
+
+              # per default an account with a role (if 'authenticateRoles' is defined) is only created
+              # if 'partyCreation' is TRUE a Party with the given 'fields' is created
+              partyCreation: true

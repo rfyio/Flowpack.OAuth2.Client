@@ -122,10 +122,12 @@ class FacebookProvider extends AbstractClientProvider
             // adding in Settings.yaml specified roles to the account
             // so the account can be authenticate against a role in the frontend for example
             $roles = array();
-            foreach ($this->options['authenticateRoles'] as $roleIdentifier) {
-                $roles[] = $this->policyService->getRole($roleIdentifier);
+            if (isset($this->options['authenticateRoles'])) {
+                foreach ($this->options['authenticateRoles'] as $roleIdentifier) {
+                    $roles[] = $this->policyService->getRole($roleIdentifier);
+                }
+                $account->setRoles($roles);
             }
-            $account->setRoles($roles);
             $this->accountRepository->add($account);
         }
         $authenticationToken->setAccount($account);

@@ -84,18 +84,17 @@ abstract class AbstractClientToken extends AbstractToken
 
         if (!$actionRequest->hasArgument('code')) {
             $this->setAuthenticationStatus(TokenInterface::WRONG_CREDENTIALS);
-            $this->securityLogger->log('There was no argument `code` provided.', LOG_NOTICE);
+            $this->securityLogger->error('There was no argument `code` provided.');
             return;
         }
         $code = $actionRequest->getArgument('code');
         $redirectUri = $this->oauthUriBuilder->getRedirectionEndpointUri($this->authenticationProviderName);
         try {
-//            $this->credentials['accessToken'] = $this->tokenEndpoint->requestAuthorizationCodeGrantAccessToken($code, $redirectUri);
             $this->credentials = $this->tokenEndpoint->requestAuthorizationCodeGrantAccessToken($code, $redirectUri);
             $this->setAuthenticationStatus(TokenInterface::AUTHENTICATION_NEEDED);
         } catch (Exception $exception) {
             $this->setAuthenticationStatus(TokenInterface::WRONG_CREDENTIALS);
-            $this->securityLogger->logException($exception);
+            $this->securityLogger->error($exception->getMessage());
             return;
         }
     }

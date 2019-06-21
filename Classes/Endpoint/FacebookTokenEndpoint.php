@@ -45,70 +45,30 @@ class FacebookTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
      */
     public function requestValidatedTokenInformation($tokenToInspect)
     {
-//        \Neos\Flow\var_dump([$tokenToInspect]);
         $applicationToken = $this->requestClientCredentialsGrantAccessToken();
-//        \Neos\Flow\var_dump([$applicationToken]);
-//        $requestArguments = array(
-//            'input_token' => $tokenToInspect['access_token'],
-//            'access_token' => $applicationToken['access_token']
-//        );
 
-        $requestArguments = [
+        $requestArguments = array(
+            'input_token' => $tokenToInspect['access_token'],
+            'access_token' => $applicationToken['access_token']
+        );
 
-            "input_token"  => $tokenToInspect,
-            "access_token" => $applicationToken["access_token"],
-            "token_type"   => $applicationToken["token_type"]
-        ];
-
-
-//        \Neos\Flow\var_dump([$requestArguments["input_token"]]);
-
-//        \Neos\Flow\var_dump([$requestArguments["access_token"]]);
-//
-//        \Neos\Flow\var_dump([$requestArguments["token_type"]]);
-//        echo print_r($requestArguments);
-
-//        echo print_r($requestArguments["access_token"]["access_token"]);
-
-//\Neos\Flow\var_dump(\http_build_query($requestArguments));
         $request = Request::create(new Uri('https://graph.facebook.com/debug_token?' . \http_build_query($requestArguments)));
 //        $request = Request::create(new Uri('https://graph.facebook.com/debug_token?' . $requestArguments["access_token"]));
 
-        \Neos\Flow\var_dump($request);
-
-
-
-
         $response = $this->requestEngine->sendRequest($request);
-//        \Neos\Flow\var_dump($this->requestEngine);
-//        \Neos\Flow\var_dump($response);
-//
-//        echo print_r($response);
 
-        $responseContent = $response->getBody();
-//
-//        \Neos\Flow\var_dump($responseContent);
-//     \Neos\Flow\var_dump($response->getStatusCode());
+        $request = Request::create(new Uri('https://graph.facebook.com/debug_token?' . http_build_query($requestArguments)));
+        $response = $this->requestEngine->sendRequest($request);
+        $responseContent = $response->getContent();
 
         if ($response->getStatusCode() !== 200) {
             throw new OAuth2Exception(sprintf('The response was not of type 200 but gave code and error %d "%s"', $response->getStatusCode(), $responseContent), 1383758360);
         }
+
         $responseArray = \json_decode($responseContent, true, 16, JSON_BIGINT_AS_STRING);
-
-        \Neos\Flow\var_dump($responseArray);
-
-//        echo '<div style="position: absolute; z-index: 1000; background-color: red; width: 100%; margin: 11.5% 0 0 0 ">
-//        <p>You arrived here</p>
-//      </div>';
-        \Neos\Flow\var_dump($responseArray["data"]["error"]["code"]);
-        \Neos\Flow\var_dump($responseArray["data"]["error"]["message"]);
-//        $responseArray['data']['app_id'] = (string)$responseArray['data']['app_id'];
-
-//        $responseArray['data']['user_id'] = (string)$responseArray['data']['user_id'];
+        $responseArray['data']['app_id'] = (string)$responseArray['data']['app_id'];
+        $responseArray['data']['user_id'] = (string)$responseArray['data']['user_id'];
         $clientIdentifier = (string)$this->clientIdentifier;
-//        \Neos\Flow\var_dump($responseArray);
-        \Neos\Flow\var_dump($clientIdentifier);
-
 
         if (!$responseArray['data']['is_valid']
             || $responseArray['data']['app_id'] !== $clientIdentifier
@@ -116,7 +76,6 @@ class FacebookTokenEndpoint extends AbstractHttpTokenEndpoint implements TokenEn
             $this->securityLogger->log('Requesting validated token information from the Facebook endpoint did not succeed.', LOG_NOTICE, array('response' => \var_export($responseArray, true), 'clientIdentifier' => $clientIdentifier));
             return false;
         } else {
-//        \Neos\Flow\var_dump($responseArray['data']);
             return $responseArray['data'];
         }
     }

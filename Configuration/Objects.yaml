@@ -44,8 +44,6 @@ Flowpack\OAuth2\Client\Endpoint\LinkedInTokenEndpoint:
     'display':
       setting: 'Neos.Flow.security.authentication.providers.LinkedInOAuth2Provider.providerOptions.display'
 
-
-
 Flowpack\OAuth2\Client\Utility\GoogleApiClient:
   properties:
     'requestEngine':

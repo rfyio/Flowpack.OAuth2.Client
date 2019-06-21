@@ -47,7 +47,7 @@ class LinkedInFlow extends AbstractFlow implements FlowInterface
         $electronicAddress = new ElectronicAddress();
         $electronicAddress->setType(ElectronicAddress::TYPE_EMAIL);
         $electronicAddress->setIdentifier($userData['email']);
-        $electronicAddress->isApproved(true);
+        $electronicAddress->setApproved(true);
         $party->addElectronicAddress($electronicAddress);
         $party->setPrimaryElectronicAddress($electronicAddress);
 
@@ -58,7 +58,7 @@ class LinkedInFlow extends AbstractFlow implements FlowInterface
         }
 
         $account = $token->getAccount();
-        $account->setParty($party);
+        $party->addAccount($account);
         $this->accountRepository->update($account);
         $this->partyRepository->add($party);
 

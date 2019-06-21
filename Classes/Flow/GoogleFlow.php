@@ -47,7 +47,7 @@ class GoogleFlow extends AbstractFlow implements FlowInterface
         $electronicAddress = new ElectronicAddress();
         $electronicAddress->setType(ElectronicAddress::TYPE_EMAIL);
         $electronicAddress->setIdentifier($userData['email']);
-        $electronicAddress->isApproved(true);
+        $electronicAddress->setApproved(true);
         $party->addElectronicAddress($electronicAddress);
         $party->setPrimaryElectronicAddress($electronicAddress);
 
